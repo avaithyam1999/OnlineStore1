@@ -3,11 +3,15 @@ package com.pluralsight;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Program {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
+        ArrayList<Product> inventory = new ArrayList<>();
+        ArrayList<Product> cart = new ArrayList<>();
 
         System.out.println("""
                 Welcome to Ajith's Online Store
@@ -25,7 +29,17 @@ public class Program {
                 case 1 -> {
 //                    displayAllItems();
                     BufferedReader buffReader = new BufferedReader(new FileReader("products.csv"));
-
+                    buffReader.readLine();
+                    String line;
+                    while ((line = buffReader.readLine()) != null) {
+                        Product product = parseProduct(line);
+                        if (product != null) {
+                            inventory.add(product);
+                        }
+                    }
+                    for (Product product : inventory) {
+                        System.out.println(product);
+                    }
                 }
                 case 2 -> {
 //                    displayCartItems();
@@ -39,5 +53,18 @@ public class Program {
             }
         }
 
+    }
+
+    private static Product parseProduct(String line) {
+        String[] parts = line.split("\\|");
+        if (parts.length == 4) {
+            String sku = parts[0];
+            String productName = parts[1];
+            double price = Double.parseDouble(parts[2]);
+            String department = parts[3];
+        } else {
+            System.out.println("Invalid");
+        }
+        return null;
     }
 }
