@@ -13,46 +13,52 @@ public class Program {
         ArrayList<Product> inventory = new ArrayList<>();
         ArrayList<Product> cart = new ArrayList<>();
 
-        System.out.println("""
+        boolean programRunning = true;
+        while (programRunning) {
+            System.out.println("""
                 Welcome to Ajith's Online Store
                 Select an Option:
                 1. Display all products available
                 2. Display Items in Cart
                 3. Exit out of store
                 """);
-        int userChoice = scanner.nextInt();
-        scanner.nextLine();
+            int userChoice = scanner.nextInt();
+            scanner.nextLine();
 
-        boolean mainRunning = true;
-        while (mainRunning) {
             switch (userChoice) {
                 case 1 -> {
-//                    displayAllItems();
-                    BufferedReader buffReader = new BufferedReader(new FileReader("products.csv"));
-                    buffReader.readLine();
-                    String line;
-                    while ((line = buffReader.readLine()) != null) {
-                        Product product = parseProduct(line);
-                        if (product != null) {
-                            inventory.add(product);
-                        }
-                    }
-                    for (Product product : inventory) {
-                        System.out.println(product);
-                    }
+//                   displayAllItems();
+                    printAllProducts(inventory);
                 }
                 case 2 -> {
-//                    displayCartItems();
+//                   displayCartItems();
                 }
                 case 3 -> {
-                    mainRunning = false;
+                    System.out.println("Thanks for using the app, goodbye");
                 }
                 default -> {
                     System.out.println("You entered an invalid number");
                 }
             }
-        }
 
+        }
+    }
+
+
+    private static void printAllProducts(ArrayList<Product> inventory) throws IOException {
+        BufferedReader buffReader = new BufferedReader(new FileReader("products.csv"));
+        buffReader.readLine();
+        String line;
+        while ((line = buffReader.readLine()) != null) {
+            Product product = parseProduct(line);
+            if (product != null) {
+                inventory.add(product);
+            }
+        }
+        for (Product product : inventory) {
+            System.out.println(product);
+        }
+        buffReader.close();
     }
 
     private static Product parseProduct(String line) {
@@ -62,6 +68,8 @@ public class Program {
             String productName = parts[1];
             double price = Double.parseDouble(parts[2]);
             String department = parts[3];
+
+            return new Product(sku, productName, price, department);
         } else {
             System.out.println("Invalid");
         }
