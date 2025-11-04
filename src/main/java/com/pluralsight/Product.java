@@ -47,11 +47,11 @@ public class Product {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Product{");
-        sb.append("productName='").append(productName).append('\'');
-        sb.append(", price=").append(price);
-        sb.append(", department='").append(department).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return String.format("""
+                Product Name: %s
+                SKU: %s
+                Price: $%.2f
+                Department: %s
+                """, productName, sku, price, department);
     }
 }

@@ -35,6 +35,7 @@ public class Program {
                 }
                 case 3 -> {
                     System.out.println("Thanks for using the app, goodbye");
+                    programRunning = false;
                 }
                 default -> {
                     System.out.println("You entered an invalid number");
