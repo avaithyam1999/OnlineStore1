@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Program {
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Product> inventory = new ArrayList<>();
+        ArrayList<Product> inventory = loadAllProducts();
         ArrayList<Product> cart = new ArrayList<>();
 
         boolean programRunning = true;
@@ -18,7 +18,7 @@ public class Program {
             System.out.println("""
                 Welcome to Ajith's Online Store
                 Select an Option:
-                1. Display all products available
+                1. Display Products
                 2. Display Items in Cart
                 3. Exit out of store
                 """);
@@ -27,8 +27,41 @@ public class Program {
 
             switch (userChoice) {
                 case 1 -> {
-//                   displayAllItems();
-                    printAllProducts(inventory);
+                    boolean displayMenuRunning = true;
+                    while (displayMenuRunning) {
+                        System.out.println("""
+                                Select an Option:
+                                1. Search for a product
+                                2. Add a product to cart
+                                3. Go back to Store Menu
+                                """);
+                        int userDisplayChoice = scanner.nextInt();
+                        scanner.nextLine();
+
+                        switch (userDisplayChoice) {
+                            case 1 -> {
+                                //printSearchProduct();
+                                System.out.println("Enter search keyword");
+                                String searchKeyWord = scanner.nextLine().trim().toLowerCase();
+
+                                ArrayList<Product> results = new ArrayList<>();
+                                for (Product product : inventory) {
+                                    if (product.getProductName().trim().toLowerCase().contains(searchKeyWord)) {
+                                        results.add(product);
+                                    }
+                                }
+                                printProducts(results);
+
+                            }
+                            case 2 -> {
+                                //addToCart();
+                            }
+                            case 3 -> {
+                                displayMenuRunning = false;
+                            }
+                        }
+                    }
+//                    printAllProducts(inventory);
                 }
                 case 2 -> {
 //                   displayCartItems();
@@ -46,20 +79,28 @@ public class Program {
     }
 
 
-    private static void printAllProducts(ArrayList<Product> inventory) throws IOException {
+    private static ArrayList<Product> loadAllProducts() throws IOException {
+        ArrayList<Product> products = new ArrayList<>();
         BufferedReader buffReader = new BufferedReader(new FileReader("products.csv"));
         buffReader.readLine();
         String line;
         while ((line = buffReader.readLine()) != null) {
             Product product = parseProduct(line);
             if (product != null) {
-                inventory.add(product);
+                products.add(product);
             }
         }
-        for (Product product : inventory) {
-            System.out.println(product);
+        return products;
+    }
+
+    private static void printProducts(ArrayList<Product> products) throws IOException {
+        if (products.isEmpty()) {
+            System.out.println("No Products found");
+        } else {
+            for (Product product : products) {
+                System.out.println(product);
+            }
         }
-        buffReader.close();
     }
 
     private static Product parseProduct(String line) {
