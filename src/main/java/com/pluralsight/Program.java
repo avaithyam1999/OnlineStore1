@@ -78,10 +78,23 @@ public class Program {
                             }
                         }
                     }
-//                    printAllProducts(inventory);
                 }
                 case 2 -> {
 //                   displayCartItems();
+                    if (cart.isEmpty()) {
+                        System.out.println("The cart is empty");
+                    } else {
+                        System.out.printf("You have %d item(s) in your cart\n", cart.size());
+                        for (Product item : cart) {
+                            System.out.println(item);
+                        }
+
+                        double total = 0;
+                        for (Product item : cart) {
+                            total = total + item.getPrice();
+                        }
+                        System.out.printf("Cart Total: $%.2f\n", total);
+                    }
                 }
                 case 3 -> {
                     System.out.println("Thanks for using the app, goodbye");
