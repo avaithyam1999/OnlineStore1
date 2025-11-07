@@ -51,10 +51,27 @@ public class Program {
                                     }
                                 }
                                 printProducts(results);
-
                             }
                             case 2 -> {
                                 //addToCart();
+                                System.out.println("Enter the SKU of the product you want to add to your cart");
+                                String searchSKUItem = scanner.nextLine().trim().toUpperCase();
+
+                                Product item = null;
+                                for (Product product : inventory) {
+                                    if (product.getSku().trim().toUpperCase().contains(searchSKUItem)) {
+                                        item = product;
+                                    }
+                                }
+
+                                if (item != null) {
+                                    cart.add(item);
+                                    System.out.printf("%s has been added to your cart\n", item.getProductName());
+                                } else {
+                                    System.out.printf("Nothing was found for %s\n", searchSKUItem);
+                                }
+
+
                             }
                             case 3 -> {
                                 displayMenuRunning = false;
@@ -97,6 +114,7 @@ public class Program {
         if (products.isEmpty()) {
             System.out.println("No Products found");
         } else {
+            System.out.printf("%d Result(s) found:\n", products.size());
             for (Product product : products) {
                 System.out.println(product);
             }
